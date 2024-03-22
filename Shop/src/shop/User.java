@@ -1,17 +1,17 @@
 package shop;
 
 public class User {
-	private String name, id , pw;
+	private String id , pw;
 	private Cart cart;
-	public User(String name, String id ,String pw ) {
-		this.name = name;
+	public User(String id ,String pw ) {
 		this.id = id;
 		this.pw = pw;
+		cart = new Cart();
 	}
 	
-	public String getName() {
-		return this.name;
-	}
+//	public String getName() {
+//		return this.name;
+//	}
 	public String getId() {
 		return this.id;
 	}
