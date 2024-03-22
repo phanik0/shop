@@ -22,7 +22,7 @@ public class UserManager {
 		System.out.println(message);
 		return scan.next();
 	}
-	private void addUser() {
+	public void addUser() {
 		
 		String id = inputString("아이디를 입력해주세요");
 		if(!checkIdDuplication(id)) {
@@ -34,7 +34,13 @@ public class UserManager {
 		User user = new User(id,pw);
 		users.add(user);
 	}
-	
+	public void removeUser(String id, String pw) {
+		
+	}
+	public void logIn() {
+		String id = inputString("ID를 입력해주세요");
+		
+	}
 	private boolean checkIdDuplication(String id) {
 		
 		for(int i = 0 ; i<users.size();i++) {
@@ -43,5 +49,14 @@ public class UserManager {
 			return false;
 		}
 		return true;
+	}
+	public int checkUserInfo(String id, String pw) {
+		int index = -1;
+		for(int i = 0 ; i<users.size();i++) {
+			User user = users.get(i);
+			if(user.getId().equals(id)&&user.getPw().equals(pw))
+				return index;
+		}
+		return index;
 	}
 }
