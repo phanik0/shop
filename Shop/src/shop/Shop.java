@@ -64,7 +64,7 @@ public class Shop {
 		if(sel == JOIN)
 			userManager.addUser();
 		else if(sel == OUT)
-			userManager.removeUser();
+			userManager.removeUser(log);
 			else if(sel == LOG_IN)
 				userManager
 				else if(sel == LOG_OUT)
