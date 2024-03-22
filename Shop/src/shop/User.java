@@ -19,4 +19,11 @@ public class User {
 	public String getPw() {
 		return this.pw;
 	}
+	
+	public Cart getCart() {
+		return this.cart;
+	}
+	public User clone() {
+		return new User(this.id, this.pw);
+	}
 }

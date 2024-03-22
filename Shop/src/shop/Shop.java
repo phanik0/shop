@@ -7,7 +7,7 @@ public class Shop {
 	private String brand;
 	private Scanner scan = new Scanner(System.in);
 	private UserManager userManager;
-	private ItemManager itemManger;
+	private ItemManager itemManager;
 	private final int USER = 1;
 	private final int FILE = 2;
 	private final int ADMIN = 3;
@@ -50,8 +50,7 @@ public class Shop {
 
 	private void printMainMenu() {
 		System.out.println("[1]유저메뉴");
-		System.out.println("[2]파일메뉴");
-		System.out.println("[3]관리자메뉴");
+		System.out.println("[2]관리자메뉴");
 	}
 
 	private void runMainMenu() {
@@ -104,16 +103,33 @@ public class Shop {
 	}
 
 	private void shopping() {
-
+		itemManager.showAllItem();
+		int number = inputNumber("구매하실 상품을 선택해주세요");
+		if(number < 0 || number > itemManager.getItemSize()) {
+			System.err.println("올바른 상품을 골라주세요");
+			return;
+		}
+		addItem(number);
 	}
-
+	private void addItem(int number) {
+		User user = userManager.getUser(log);
+		Item item = itemManager.getItem(number);
+		Cart cart = user.getCart();
+		cart.addItemToCart(item);
+		
+		
+	}
 	private void runAdminMenu(){
 		int sel = inputNumber("메뉴를 선택해주세요");
 		if(sel == ITEM)
 			userManager.addUser();
 		else if(sel == CHECK)
+			checkTotal();
 	}
-
+	
+	private void checkTotal() {
+		
+	}
 	private void printMyPage() {
 		System.out.println("[1]장바구니");
 		System.out.println("[2]항목삭제");
@@ -140,7 +156,7 @@ public class Shop {
 		// ㄴ 로그아웃 [X]
 		// ㄴ 쇼핑하기 [X]
 		// ㄴ 마이페이지
-		// ㄴ 내장바구니 [X]
+		// 	ㄴ 내장바구니 [X]
 		// ㄴ 항목삭제 [X]
 		// ㄴ 수량수정 [X]
 		// ㄴ 결제 [X]

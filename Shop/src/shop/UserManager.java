@@ -6,7 +6,10 @@ import java.util.Scanner;
 public class UserManager {
 	private Scanner scan = new Scanner(System.in);
 	private ArrayList<User> users;
-
+	public User getUser(int index) {
+		User user = users.get(index).clone();
+		return user;
+	}
 	private int inputNumber(String message) {
 		System.out.println(message);
 		int number = 0;
