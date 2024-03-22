@@ -114,15 +114,20 @@ public class Shop {
 			System.err.println("올바른 상품을 골라주세요");
 			return;
 		}
-		addItem(number);
+		int quantity = inputNumber("구매하실 개수를 입력해주세요");
+		if (quantity < 1 || quantity > 99) {
+			System.err.println("올바른 수량을 골라주세요");
+			return;
+		}
+		addItem(number, quantity);
 	}
 
-	private void addItem(int number) {
+	private void addItem(int number, int quantity) {
 		User user = userManager.getUser(log);
 		Item item = itemManager.getItem(number);
+		item.setQuantity(quantity);
 		Cart cart = user.getCart();
 		cart.addItemToCart(item);
-
 	}
 
 	private void printMyPage() {
@@ -139,7 +144,7 @@ public class Shop {
 		else if (sel == DELETE)
 			removeItem();
 		else if (sel == MODIFY)
-			checkTotal();
+			modifyItemQuantity();
 		else if (sel == PAYMENT)
 			checkTotal();
 
@@ -164,6 +169,23 @@ public class Shop {
 			return;
 		}
 		cart.removeCartItem(index);
+	}
+
+	private void modifyItemQuantity() {
+		User user = userManager.getUser(log);
+		Cart cart = user.getCart();
+		int index = inputNumber("수정하실상품의 번호를 입력해주세요") - 1;
+		if (index < 0 || index > cart.cartSize()) {
+			System.err.println("없는상품입니다");
+			return;
+		}
+		Item item = cart.getItem(index);
+		int quantity = inputNumber("수정하실상품의 번호를 입력해주세요") - 1;
+		if (quantity < 1 || quantity > 99 || item.getQuantity() == quantity) {
+			System.err.println("올바른 수량을 골라주세요");
+			return;
+		}
+		item.setQuantity(quantity);
 	}
 
 	private void runAdminMenu() {
