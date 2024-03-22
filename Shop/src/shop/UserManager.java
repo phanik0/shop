@@ -39,7 +39,9 @@ public class UserManager {
 		User user = new User(id, pw);
 		users.add(user);
 	}
-
+	public void addUser(User user) {
+		users.add(user);
+	}
 	public void removeUser(int index) {
 		String pw = inputString("비밀번호를 입력해주세요");
 		User user = users.get(index);

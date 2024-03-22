@@ -1,5 +1,9 @@
 package shop;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,6 +12,11 @@ public class Shop {
 	private Scanner scan = new Scanner(System.in);
 	private UserManager userManager;
 	private ItemManager itemManager;
+	private File file;
+	private FileReader fr;
+	private FileWriter fw;
+	private BufferedReader br;
+	private String fileName;
 	private final int USER = 1;
 	private final int FILE = 2;
 	private final int ADMIN = 3;
@@ -39,6 +48,8 @@ public class Shop {
 	}
 
 	private void setSystem() {
+		fileName = "shop.txt";
+		file = new File(fileName);
 		log = -1;
 	}
 
@@ -232,10 +243,76 @@ public class Shop {
 	}
 
 	private void modifyItem() {
-
+		itemManager.modifyItem();
 	}
 
 	private void checkTotal() {
+		System.out.printf("현재 총 매출은 %d원 입니다\n", total);
+	}
+
+	private void saveFile() {
+		String info = setInfo();
+		try {
+			fw = new FileWriter(file);
+			fw.write(info);
+			fw.close();
+			System.out.println("파일저장 성공");
+		} catch (Exception e) {
+			System.err.println("파일저장실패");
+		}
+	}
+
+	private String setInfo() {// 회원정보 : 아이디 비밀번호 장바구니-이름 가격 개수
+								// 관리자 정보 : 아이템 가격
+		String info = "";
+		return info;
+	}
+
+	private void loadFile() {
+		try {
+			fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			boolean isUser = true;
+			while (br.ready()) {
+				String line = br.readLine();
+				if (line.contains("/"))
+					isUser = false;
+
+				if (isUser) {
+					splitUserData(line);
+				} else
+					splitAdminData(line);
+			}
+			fr.close();
+			br.close();
+			System.out.println("로드성공");
+		} catch (Exception e) {
+			System.err.println("로드실패");
+		}
+	}
+
+	private void splitUserData(String line) {
+		String[] temp = line.split(",");
+		String id = temp[0];
+		String pw = temp[1];
+		User user = new User(id, pw);
+		Cart cart = user.getCart();
+		for (int i = 2; i < temp.length; i += 3) {
+			String name = temp[i];
+			int price = Integer.parseInt(temp[i + 1]);
+			int quantity = Integer.parseInt(temp[i + 2]);
+			Item item = new Item(name, price, quantity);
+			cart.addItemToCart(item);
+		}
+		userManager.addUser(user);
+	}
+
+	private void splitAdminData(String line) {
+		String[] temp = line.split(",");
+		String name = temp[0];
+		int price = Integer.parseInt(temp[1]);
+		Item item = new Item(name, price);
+		itemManager.addItem(item);
 
 	}
 

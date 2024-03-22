@@ -46,7 +46,9 @@ public class ItemManager {
 		list.add(item);
 
 	}
-
+	public void addItem(Item item) {
+		list.add(item);
+	}
 	public void modifyItem() {
 		String name1 = inputString("수정할 아이템을 입력해주세요");
 		int index = findItemIndex(name1);
@@ -65,6 +67,8 @@ public class ItemManager {
 		Item item2 = new Item(name2, price);
 		list.set(index, item2);
 	}
+
+
 
 	private int inputNumber(String message) {
 		System.out.println(message);
