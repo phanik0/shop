@@ -35,4 +35,16 @@ public class Cart {
 	public void removeCartItem(int index) {
 		list.remove(index);
 	}
+	public void removeAllItem() {
+		list.clear();
+	}
+	public int addAllItemPrice() {
+		int price = 0 ;
+		for(int i = 0 ; i<list.size();i++) {
+			Item item = list.get(i);
+			price += item.getPrice();
+		}
+		return price;
+	}
+	
 }

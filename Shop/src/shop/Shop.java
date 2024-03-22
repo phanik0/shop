@@ -146,7 +146,7 @@ public class Shop {
 		else if (sel == MODIFY)
 			modifyItemQuantity();
 		else if (sel == PAYMENT)
-			checkTotal();
+			payment();
 
 	}
 
@@ -186,6 +186,17 @@ public class Shop {
 			return;
 		}
 		item.setQuantity(quantity);
+	}
+
+	private void payment() {
+		printMyCart();
+		User user = userManager.getUser(log);
+		Cart cart = user.getCart();
+		int total = cart.addAllItemPrice();
+		System.out.printf("총금액은 %d 원입니다\n", total);
+		String pay = inputString("결제하시겠습니까? Y/N");
+		if (pay.equals("Y"))
+			cart.removeAllItem();
 	}
 
 	private void runAdminMenu() {
