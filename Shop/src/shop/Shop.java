@@ -17,7 +17,12 @@ public class Shop {
 	private final int LOG_IN = 3;
 	private final int LOG_OUT = 4;
 	private final int SHOPPING = 5;
-
+	
+	private final int CART = 1;
+	private final int DELETE = 2;
+	private final int MODIFY = 3;
+	private final int PAYMENT = 4;
+	
 	private final int ITEM = 1;
 	private final int CHECK = 2;
 
@@ -119,6 +124,34 @@ public class Shop {
 		
 		
 	}
+	private void printMyPage() {
+		System.out.println("[1]장바구니");
+		System.out.println("[2]항목삭제");
+		System.out.println("[3]수량수정");
+		System.out.println("[4]결제");
+	}
+	
+	private void runMyPage() {
+		int sel = inputNumber("메뉴를 선택해주세요");
+		if(sel == CART)
+			printMyCart();
+		else if(sel == DELETE)
+			checkTotal();
+		else if(sel == MODIFY)
+			checkTotal();
+		else if(sel == PAYMENT)
+			checkTotal();
+	
+
+	}
+	private void printMyCart() {
+		User user = userManager.getUser(log);
+		Cart cart = user.getCart();
+		for(int i = 0 ; i<cart.cartSize();i++) {
+			Item item = cart.getItem(i);
+			System.out.println(item);
+		}
+	}
 	private void runAdminMenu(){
 		int sel = inputNumber("메뉴를 선택해주세요");
 		if(sel == ITEM)
@@ -129,12 +162,6 @@ public class Shop {
 	
 	private void checkTotal() {
 		
-	}
-	private void printMyPage() {
-		System.out.println("[1]장바구니");
-		System.out.println("[2]항목삭제");
-		System.out.println("[3]수량수정");
-		System.out.println("[4]결제");
 	}
 
 	private void printAdminMenu() {

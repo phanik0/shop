@@ -11,4 +11,12 @@ public class Cart {
 	public void addItemToCart(Item item) {
 		list.add(item);
 	}
+	
+	public Item getItem(int index) {
+		return list.get(index).clone();
+	}
+	
+	public int cartSize() {
+		return list.size();
+	}
 }
