@@ -25,7 +25,13 @@ public class Shop {
 
 	private final int ITEM = 1;
 	private final int CHECK = 2;
-
+	
+	private final int REGISTER = 1;
+	private final int DELETE_ITEM= 2;
+	private final int MODIFY_ITEM= 3;
+	private final int TOTAL= 4;
+	
+	private int total;
 	private int log;
 
 	public Shop(String brand) {
@@ -195,32 +201,41 @@ public class Shop {
 		int total = cart.addAllItemPrice();
 		System.out.printf("총금액은 %d 원입니다\n", total);
 		String pay = inputString("결제하시겠습니까? Y/N");
-		if (pay.equals("Y"))
+		if (pay.equals("Y")) {
+			this.total += total;
 			cart.removeAllItem();
+		}
 	}
-
+	//관리자
+	private void printAdminMenu() {
+		System.out.println("[1]등록");
+		System.out.println("[2]삭제");
+		System.out.println("[3]수정");
+		System.out.println("[4]조회");
+	}
+	
 	private void runAdminMenu() {
 		int sel = inputNumber("메뉴를 선택해주세요");
-		if (sel == ITEM)
-			userManager.addUser();
-		else if (sel == CHECK)
+		if (sel == REGISTER)
+			registItem();
+		else if (sel == DELETE_ITEM)
+			checkTotal();
+		else if (sel == MODIFY_ITEM)
+			modifyItem();
+		else if (sel == TOTAL)
 			checkTotal();
 	}
-
+	private void registItem() {
+		itemManager.addItem();
+	}
+	private void modifyItem() {
+		
+	}
 	private void checkTotal() {
 
 	}
 
-	private void printAdminMenu() {
-		System.out.println("[1]아이템");
-		System.out.println("[2]조회");
-	}
 
-	private void printItemMenu() {
-		System.out.println("[1]등록");
-		System.out.println("[1]삭제");
-		System.out.println("[1]수정");
-	}
 
 	public void run() {
 		// 유저 -

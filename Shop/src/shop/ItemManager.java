@@ -17,12 +17,19 @@ public class ItemManager {
 			System.out.print(item);
 		}
 	}
-	public void addItem(int log,int index) {
-		if(index > list.size() || index <0) {
-			System.err.println("올바른 상품을 선택해주세요");
-			return;
+	public void addItem() {
+		String name = inputString("추가할 아이템을 입력해주세요");
+		for(int i = 0 ; i<list.size();i++) {
+			Item item = list.get(i);
+			if(item.getName().equals(name)) {
+				System.err.println("이미 존재하는 아이템입니다");
+				return;
+			}
 		}
-		User user = 
+		int price = inputNumber("가격을 입력해주세요");
+		Item item = new Item(name,price);
+		list.add(item);
+		
 	}
 	
 	public Item getItem(int index) {
@@ -43,5 +50,9 @@ public class ItemManager {
 			System.err.println("숫자만 입력하세요 ");
 		}
 		return number;
+	}
+	private String inputString(String message) {
+		System.out.println(message);
+		return scan.next();
 	}
 }
