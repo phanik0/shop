@@ -25,12 +25,12 @@ public class Shop {
 
 	private final int ITEM = 1;
 	private final int CHECK = 2;
-	
+
 	private final int REGISTER = 1;
-	private final int DELETE_ITEM= 2;
-	private final int MODIFY_ITEM= 3;
-	private final int TOTAL= 4;
-	
+	private final int DELETE_ITEM = 2;
+	private final int MODIFY_ITEM = 3;
+	private final int TOTAL = 4;
+
 	private int total;
 	private int log;
 
@@ -206,14 +206,15 @@ public class Shop {
 			cart.removeAllItem();
 		}
 	}
-	//관리자
+
+	// 관리자
 	private void printAdminMenu() {
 		System.out.println("[1]등록");
 		System.out.println("[2]삭제");
 		System.out.println("[3]수정");
 		System.out.println("[4]조회");
 	}
-	
+
 	private void runAdminMenu() {
 		int sel = inputNumber("메뉴를 선택해주세요");
 		if (sel == REGISTER)
@@ -225,17 +226,18 @@ public class Shop {
 		else if (sel == TOTAL)
 			checkTotal();
 	}
+
 	private void registItem() {
 		itemManager.addItem();
 	}
+
 	private void modifyItem() {
-		
+
 	}
+
 	private void checkTotal() {
 
 	}
-
-
 
 	public void run() {
 		// 유저 -
