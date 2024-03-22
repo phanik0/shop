@@ -34,8 +34,14 @@ public class UserManager {
 		User user = new User(id,pw);
 		users.add(user);
 	}
-	public void removeUser(String id, String pw) {
-		
+	public void removeUser(int index) {
+		String pw = inputString("비밀번호를 입력해주세요");
+		User user = users.get(index);
+		if(!user.getPw().equals(pw)) {
+			System.err.println("비밀번호가 일치하지 않습니다");
+			return;
+		}
+		users.remove(index);
 	}
 	public void logIn() {
 		String id = inputString("ID를 입력해주세요");
