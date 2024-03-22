@@ -17,12 +17,12 @@ public class Shop {
 	private final int LOG_IN = 3;
 	private final int LOG_OUT = 4;
 	private final int SHOPPING = 5;
-	
+
 	private final int CART = 1;
 	private final int DELETE = 2;
 	private final int MODIFY = 3;
 	private final int PAYMENT = 4;
-	
+
 	private final int ITEM = 1;
 	private final int CHECK = 2;
 
@@ -110,58 +110,72 @@ public class Shop {
 	private void shopping() {
 		itemManager.showAllItem();
 		int number = inputNumber("구매하실 상품을 선택해주세요");
-		if(number < 0 || number > itemManager.getItemSize()) {
+		if (number < 0 || number > itemManager.getItemSize()) {
 			System.err.println("올바른 상품을 골라주세요");
 			return;
 		}
 		addItem(number);
 	}
+
 	private void addItem(int number) {
 		User user = userManager.getUser(log);
 		Item item = itemManager.getItem(number);
 		Cart cart = user.getCart();
 		cart.addItemToCart(item);
-		
-		
+
 	}
+
 	private void printMyPage() {
 		System.out.println("[1]장바구니");
 		System.out.println("[2]항목삭제");
 		System.out.println("[3]수량수정");
 		System.out.println("[4]결제");
 	}
-	
+
 	private void runMyPage() {
 		int sel = inputNumber("메뉴를 선택해주세요");
-		if(sel == CART)
+		if (sel == CART)
 			printMyCart();
-		else if(sel == DELETE)
+		else if (sel == DELETE)
+			removeItem();
+		else if (sel == MODIFY)
 			checkTotal();
-		else if(sel == MODIFY)
+		else if (sel == PAYMENT)
 			checkTotal();
-		else if(sel == PAYMENT)
-			checkTotal();
-	
 
 	}
+
 	private void printMyCart() {
 		User user = userManager.getUser(log);
 		Cart cart = user.getCart();
-		for(int i = 0 ; i<cart.cartSize();i++) {
+		for (int i = 0; i < cart.cartSize(); i++) {
 			Item item = cart.getItem(i);
 			System.out.println(item);
 		}
 	}
-	private void runAdminMenu(){
+
+	private void removeItem() {
+		printMyCart();
+		User user = userManager.getUser(log);
+		Cart cart = user.getCart();
+		int index = inputNumber("지우실 상품의 번호를 입력해주세요") - 1;
+		if (index < 0 || index > cart.cartSize()) {
+			System.err.println("없는상품입니다");
+			return;
+		}
+		cart.removeCartItem(index);
+	}
+
+	private void runAdminMenu() {
 		int sel = inputNumber("메뉴를 선택해주세요");
-		if(sel == ITEM)
+		if (sel == ITEM)
 			userManager.addUser();
-		else if(sel == CHECK)
+		else if (sel == CHECK)
 			checkTotal();
 	}
-	
+
 	private void checkTotal() {
-		
+
 	}
 
 	private void printAdminMenu() {
@@ -183,7 +197,7 @@ public class Shop {
 		// ㄴ 로그아웃 [X]
 		// ㄴ 쇼핑하기 [X]
 		// ㄴ 마이페이지
-		// 	ㄴ 내장바구니 [X]
+		// ㄴ 내장바구니 [X]
 		// ㄴ 항목삭제 [X]
 		// ㄴ 수량수정 [X]
 		// ㄴ 결제 [X]
