@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class ItemManager {
 	private Scanner scan = new Scanner(System.in);
 
-	private ArrayList<Item> list;
+	private ArrayList<Item> list = new ArrayList<>();
 
 	public int getItemSize() {
 		return list.size();

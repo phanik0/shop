@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class UserManager {
 	private Scanner scan = new Scanner(System.in);
-	private ArrayList<User> users;
+	private ArrayList<User> users = new ArrayList<>();
 	public User getUser(int index) {
 		User user = users.get(index).clone();
 		return user;
@@ -21,18 +21,22 @@ public class UserManager {
 		}
 		return number;
 	}
-
+	
 	private String inputString(String message) {
 		System.out.println(message);
 		return scan.next();
 	}
-
+	public int getSize() {
+		return users.size();
+	}
 	public void addUser() {
 
 		String id = inputString("아이디를 입력해주세요");
+		if(users.size()>1) {
 		if (!checkIdDuplication(id)) {
 			System.err.println("중복된 아이디입니다");
 			return;
+		}
 		}
 		String pw = inputString("비밀번호를 입력해주세요");
 
@@ -52,10 +56,7 @@ public class UserManager {
 		users.remove(index);
 	}
 
-	public void logIn() {
-		String id = inputString("ID를 입력해주세요");
-
-	}
+	
 
 	private boolean checkIdDuplication(String id) {
 
@@ -72,7 +73,7 @@ public class UserManager {
 		for (int i = 0; i < users.size(); i++) {
 			User user = users.get(i);
 			if (user.getId().equals(id) && user.getPw().equals(pw))
-				return index;
+				return index = i;
 		}
 		return index;
 	}

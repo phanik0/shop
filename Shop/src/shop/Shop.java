@@ -19,13 +19,14 @@ public class Shop {
 	private String fileName;
 	private final int USER = 1;
 	private final int FILE = 2;
-	private final int ADMIN = 3;
+	private final int ADMIN = 2;
 
 	private final int JOIN = 1;
 	private final int OUT = 2;
 	private final int LOG_IN = 3;
 	private final int LOG_OUT = 4;
 	private final int SHOPPING = 5;
+	private final int MY_PAGE = 6;
 
 	private final int CART = 1;
 	private final int DELETE = 2;
@@ -50,6 +51,8 @@ public class Shop {
 	private void setSystem() {
 		fileName = "shop.txt";
 		file = new File(fileName);
+		userManager = new UserManager();
+		itemManager = new ItemManager();
 		log = -1;
 	}
 
@@ -71,6 +74,12 @@ public class Shop {
 	}
 
 	private void printMainMenu() {
+		for(int i = 0 ; i<userManager.getSize();i++) {
+			System.out.println(userManager.getUser(i));
+		}
+		for(int i = 0 ; i<itemManager.getItemSize();i++) {
+			System.out.println(itemManager.getItem(i));
+		}
 		System.out.println("[1]유저메뉴");
 		System.out.println("[2]관리자메뉴");
 	}
@@ -90,9 +99,11 @@ public class Shop {
 		System.out.println("[3]로그인");
 		System.out.println("[4]로그아웃");
 		System.out.println("[5]쇼핑하기");
+		System.out.println("[6]마이페이지");
 	}
 
 	private void runUserMenu() {
+		printUserMenu();
 		int sel = inputNumber("메뉴를 선택해주세요");
 		if (sel == JOIN)
 			userManager.addUser();
@@ -104,6 +115,8 @@ public class Shop {
 			logOut();
 		else if (sel == SHOPPING)
 			shopping();
+		else if (sel == MY_PAGE)
+			runMyPage();
 
 	}
 
@@ -126,7 +139,7 @@ public class Shop {
 
 	private void shopping() {
 		itemManager.showAllItem();
-		int number = inputNumber("구매하실 상품을 선택해주세요");
+		int number = inputNumber("구매하실 상품을 선택해주세요")-1;
 		if (number < 0 || number > itemManager.getItemSize()) {
 			System.err.println("올바른 상품을 골라주세요");
 			return;
@@ -155,6 +168,7 @@ public class Shop {
 	}
 
 	private void runMyPage() {
+		printMyPage();
 		int sel = inputNumber("메뉴를 선택해주세요");
 		if (sel == CART)
 			printMyCart();
@@ -171,8 +185,7 @@ public class Shop {
 		User user = userManager.getUser(log);
 		Cart cart = user.getCart();
 		for (int i = 0; i < cart.cartSize(); i++) {
-			Item item = cart.getItem(i);
-			System.out.println(item);
+			System.out.println(cart);
 		}
 	}
 
@@ -227,6 +240,7 @@ public class Shop {
 	}
 
 	private void runAdminMenu() {
+		printAdminMenu();
 		int sel = inputNumber("메뉴를 선택해주세요");
 		if (sel == REGISTER)
 			registItem();
@@ -265,6 +279,40 @@ public class Shop {
 	private String setInfo() {// 회원정보 : 아이디 비밀번호 장바구니-이름 가격 개수
 								// 관리자 정보 : 아이템 가격
 		String info = "";
+		info += addUserInfo();
+		info += "/\n";
+		info += addItemInfo();
+
+		return info;
+	}
+
+	private String addUserInfo() {
+		String info = "";
+		for (int i = 0; i < userManager.getSize(); i++) {
+			User user = userManager.getUser(i);
+			String id = user.getId();
+			String pw = user.getPw();
+			Cart cart = user.getCart();
+			info += id + "," + pw + ",";
+			for (int j = 0; j < cart.cartSize(); j++) {
+				Item item = cart.getItem(j);
+				if (j != cart.cartSize() - 1)
+					info += item.getName() + "," + item.getQuantity() + ",";
+				else
+					info += item.getName() + "," + item.getQuantity();
+			}
+			info += "\n";
+
+		}
+		return info;
+	}
+
+	private String addItemInfo() {
+		String info = "";
+		for (int i = 0; i < itemManager.getItemSize(); i++) {
+			Item item = itemManager.getItem(i);
+			info += item.getName() + "," + item.getPrice() + "\n";
+		}
 		return info;
 	}
 
@@ -275,18 +323,21 @@ public class Shop {
 			boolean isUser = true;
 			while (br.ready()) {
 				String line = br.readLine();
-				if (line.contains("/"))
+				if (line.contains("/")) {
 					isUser = false;
+					continue;
+				}
 
 				if (isUser) {
 					splitUserData(line);
-				} else
-					splitAdminData(line);
+				} else if(!isUser && !line.isEmpty())
+					splitItemData(line);
 			}
 			fr.close();
 			br.close();
 			System.out.println("로드성공");
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("로드실패");
 		}
 	}
@@ -307,7 +358,7 @@ public class Shop {
 		userManager.addUser(user);
 	}
 
-	private void splitAdminData(String line) {
+	private void splitItemData(String line) {
 		String[] temp = line.split(",");
 		String name = temp[0];
 		int price = Integer.parseInt(temp[1]);
@@ -317,20 +368,30 @@ public class Shop {
 	}
 
 	public void run() {
-		// 유저 -
-		// ㄴ 회원가입 [O]
-		// ㄴ 탈퇴 [X]
-		// ㄴ 로그인 [X]
-		// ㄴ 로그아웃 [X]
-		// ㄴ 쇼핑하기 [X]
-		// ㄴ 마이페이지
-		// ㄴ 내장바구니 [X]
-		// ㄴ 항목삭제 [X]
-		// ㄴ 수량수정 [X]
-		// ㄴ 결제 [X]
-		// 파일
-		// ㄴ 자동저장 [X]
-		// ㄴ 자동로드 [X]
+		setSystem();
+		if (file.exists()) {
+			loadFile();
+		}
+		while (true) {
+			printMainMenu();
+			runMainMenu();
+			saveFile();
+			// 유저 -
+			// ㄴ 회원가입 [O]
+
+			// ㄴ 탈퇴 [X]
+			// ㄴ 로그인 [X]
+			// ㄴ 로그아웃 [X]
+			// ㄴ 쇼핑하기 [X]
+			// ㄴ 마이페이지
+			// ㄴ 내장바구니 [X]
+			// ㄴ 항목삭제 [X]
+			// ㄴ 수량수정 [X]
+			// ㄴ 결제 [X]
+			// 파일
+			// ㄴ 자동저장 [X]
+			// ㄴ 자동로드 [X]
+		}
 
 		// 관리자 -
 		// ㄴ 아이템

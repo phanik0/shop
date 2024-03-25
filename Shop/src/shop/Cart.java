@@ -46,5 +46,14 @@ public class Cart {
 		}
 		return price;
 	}
+	@Override
+	public String toString() {
+		String info = "";
+		for(int i = 0 ; i<list.size();i++) {
+			Item item = list.get(i);
+			info += item.getName() + ":" + item.getPrice()+"\n";
+		}
+		return info;
+	}
 	
 }

@@ -26,4 +26,8 @@ public class User {
 	public User clone() {
 		return new User(this.id, this.pw);
 	}
+	@Override
+	public String toString() {
+		return String.format("ID : %s , PW : %s"+cart,id, pw);
+	}
 }

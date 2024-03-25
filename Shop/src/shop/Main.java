@@ -5,16 +5,9 @@ import java.util.Arrays;
 public class Main {
 
 	public static void main(String[] args) {
-//		Shop shop = new Shop("Mega");
-//		shop.run();
-		String info = "";
-		info += "1,2,3\n";
-		info+= "/\n";
-		info += "1,2,3\n";
-		info += "1,2,3\n";
-		System.out.println(info);
-		String []temp = info.split("\n");
-		System.out.println(Arrays.toString(temp));
+		Shop shop = new Shop("Mega");
+		shop.run();
+		
 		// TODO Auto-generated method stub
 		// * 커밋은 완성된 기능 단위로 할 것! 
 		// ㄴ 디버깅 필 
